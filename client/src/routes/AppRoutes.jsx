@@ -4,35 +4,70 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import AuthLayout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addUser } from "../features/AuthSlice";
+import PublicProtected from "./protected/PublicProtected";
+import MainProtected from "./protected/MainProtected";
 
 const AppRoutes = () => {
+
+    let dispatch = useDispatch();
+
+    const hydrateUser = () => {
+        let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+        if(!loggedInUser){
+            toast.error("unauthorized access");
+            return;
+        }
+
+        dispatch(addUser(loggedInUser));
+    }
+
+    useEffect(() => {
+        hydrateUser();
+    }, []);
 
     let router = createBrowserRouter([
         {
             path : "/",
-            element : <AuthLayout />,
+            element : <PublicProtected />,
             children : [
                 {
                     path : "",
-                    element : <Login />
-                },
-                {
-                    path : "login",
-                    element : <Login />
-                },
-                {
-                    path : "/register",
-                    element : <Register />
+                    element : <AuthLayout />,
+                    children : [
+                        {
+                            path : "",
+                            element : <Login />
+                        },
+                        {
+                            path : "login",
+                            element : <Login />
+                        },
+                        {
+                            path : "/register",
+                            element : <Register />
+                        }
+                    ]
                 }
             ]
         },
         {
             path : "/home",
-            element : <MainLayout />,
+            element : <MainProtected />,
             children : [
                 {
                     path : "",
-                    element : <Home /> 
+                    element : <MainLayout />,
+                    children : [
+                        {
+                            path : "",
+                            element : <Home /> 
+                        }
+                    ]
                 }
             ]
         }

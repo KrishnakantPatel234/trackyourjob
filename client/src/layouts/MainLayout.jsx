@@ -1,16 +1,14 @@
 import React from 'react'
 import { Outlet } from 'react-router';
+import Footer from '../components/Footer';
+import Navbar from "../components/Navbar";
 
 const MainLayout = () => {
   return (
     <div>
-        <nav className="flex justify-between gap-10" >
-            <p>something</p>
-            <p>something</p>
-            <p>something</p>
-            <p>something</p>
-        </nav>
+        <Navbar />
         <Outlet/>
+        <Footer />
     </div>
   )
 }
