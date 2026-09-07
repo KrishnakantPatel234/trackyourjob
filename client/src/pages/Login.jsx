@@ -100,6 +100,7 @@ const Login = () => {
         <p className="text-center text-sm text-slate-500 mt-6">
           Don't have an account?{" "}
           <button
+            type="button"
             onClick={() => navigate("/register")}
             className="text-blue-600 font-medium hover:text-blue-700 cursor-pointer"
           >
